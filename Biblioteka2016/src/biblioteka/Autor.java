@@ -1,13 +1,42 @@
 package biblioteka;
 
+/**
+ * Ovo je klasa koja predstavlja autora neke knjige.
+ * @author Bojan Tomic
+ * @version 1.0
+ *
+ */
 public class Autor {
 	
+	/**
+	 * Ime autora
+	 */
 	private String ime;
+	
+	/**
+	 * Prezime autora
+	 */
 	private String prezime;
 	
+	
+	/**
+	 * Vraca vrednost atributa ime
+	 * @return ime autora
+	 */
 	public String getIme() {
 		return ime;
 	}
+	
+	/**
+	 * Postavlja novu vrednost za atribut ime
+	 * @param ime Nova vrednost za ime autora
+	 * @throws java.lang.RuntimeException ako je uneto
+	 * ime
+	 * <ul> 
+	 * 		<li>null</li>
+	 * 		<li>prazan String</li>
+	 * </ul>
+	 */
 	public void setIme(String ime) {
 		if (ime==null || ime.isEmpty())
 			throw new RuntimeException("Morate uneti ime");
