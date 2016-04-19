@@ -1,61 +1,70 @@
 package biblioteka;
 
+import java.io.Serializable;
+
 /**
  * Ovo je klasa koja predstavlja autora neke knjige.
+ * 
  * @author Bojan Tomic
  * @version 1.0
  *
  */
-public class Autor {
-	
+public class Autor implements Serializable {
+
 	/**
 	 * Ime autora
 	 */
 	private String ime;
-	
+
 	/**
 	 * Prezime autora
 	 */
 	private String prezime;
-	
-	
+
 	/**
 	 * Vraca vrednost atributa ime
+	 * 
 	 * @return ime autora
 	 */
 	public String getIme() {
 		return ime;
 	}
-	
+
 	/**
 	 * Postavlja novu vrednost za atribut ime
-	 * @param ime Nova vrednost za ime autora
-	 * @throws java.lang.RuntimeException ako je uneto
-	 * ime
-	 * <ul> 
-	 * 		<li>null</li>
-	 * 		<li>prazan String</li>
-	 * </ul>
+	 * 
+	 * @param ime
+	 *            Nova vrednost za ime autora
+	 * @throws java.lang.RuntimeException
+	 *             ako je uneto ime
+	 *             <ul>
+	 *             <li>null</li>
+	 *             <li>prazan String</li>
+	 *             </ul>
 	 */
 	public void setIme(String ime) {
-		if (ime==null || ime.isEmpty())
+		if (ime == null || ime.isEmpty())
 			throw new RuntimeException("Morate uneti ime");
-		
+
 		this.ime = ime;
 	}
+
 	public String getPrezime() {
 		return prezime;
 	}
+
 	public void setPrezime(String prezime) {
-		if (prezime==null || prezime.isEmpty())
+		if (prezime == null || prezime.isEmpty())
 			throw new RuntimeException("Morate uneti prezime");
-		
+
 		this.prezime = prezime;
 	}
+
 	@Override
 	public String toString() {
 		return "Autor [ime=" + ime + ", prezime=" + prezime + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -64,6 +73,7 @@ public class Autor {
 		result = prime * result + ((prezime == null) ? 0 : prezime.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -85,7 +95,5 @@ public class Autor {
 			return false;
 		return true;
 	}
-	
-	
 
 }

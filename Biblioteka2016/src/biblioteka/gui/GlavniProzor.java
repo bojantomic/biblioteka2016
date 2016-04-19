@@ -9,8 +9,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,7 +25,14 @@ import javax.swing.border.EmptyBorder;
 
 import biblioteka.Knjiga;
 import biblioteka.gui.models.KnjigaTableModel;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class GlavniProzor extends JFrame {
 
 	private JPanel contentPane;
@@ -43,6 +48,8 @@ public class GlavniProzor extends JFrame {
 	private JPanel panel;
 	private JButton btnDodajKnjigu;
 	private JButton btnIzbrisiKnjigu;
+	private JPopupMenu popupMenu;
+	private JMenuItem mntmDodajKnjigu;
 
 	/**
 	 * Create the frame.
@@ -58,7 +65,7 @@ public class GlavniProzor extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(GlavniProzor.class.getResource("/icons/Winter.jpg")));
 		setTitle("Glavni prozor");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 552, 364);
+		setBounds(100, 100, 635, 364);
 		setJMenuBar(getMenuBar_1());
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -90,6 +97,7 @@ public class GlavniProzor extends JFrame {
 	private JMenuItem getMntmOpen() {
 		if (mntmOpen == null) {
 			mntmOpen = new JMenuItem("Open");
+			mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 			mntmOpen.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					GUIKontroler.ucitajIzFajla();
@@ -104,6 +112,12 @@ public class GlavniProzor extends JFrame {
 	private JMenuItem getMntmSave() {
 		if (mntmSave == null) {
 			mntmSave = new JMenuItem("Save");
+			mntmSave.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					GUIKontroler.sacuvajUFajl();
+				}
+			});
+			mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 			mntmSave.setIcon(
 					new ImageIcon(GlavniProzor.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
 		}
@@ -143,6 +157,7 @@ public class GlavniProzor extends JFrame {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
+			addPopup(scrollPane, getPopupMenu());
 			scrollPane.setViewportView(getTable());
 		}
 		return scrollPane;
@@ -151,8 +166,7 @@ public class GlavniProzor extends JFrame {
 	private JTable getTable() {
 		if (table == null) {
 			table = new JTable();
-			List<Knjiga> knjige = new LinkedList<>();
-			KnjigaTableModel model = new KnjigaTableModel(knjige);
+			KnjigaTableModel model = new KnjigaTableModel(null);
 			table.setModel(model);
 		}
 		return table;
@@ -190,9 +204,10 @@ public class GlavniProzor extends JFrame {
 					if (index == -1) {
 						GUIKontroler.porukaGreskeBiranjeReda();
 					} else {
-						int opcija = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da zelite da izbrisete izbranu knjigu?",
-								"Poruka", JOptionPane.YES_NO_OPTION);
-						if(opcija == JOptionPane.YES_OPTION) {
+						int opcija = JOptionPane.showConfirmDialog(null,
+								"Da li ste sigurni da zelite da izbrisete izbranu knjigu?", "Poruka",
+								JOptionPane.YES_NO_OPTION);
+						if (opcija == JOptionPane.YES_OPTION) {
 							KnjigaTableModel model = (KnjigaTableModel) table.getModel();
 							Knjiga k = model.getKnjigaByIndex(index);
 							GUIKontroler.izbrisiKnjigu(k);
@@ -209,5 +224,45 @@ public class GlavniProzor extends JFrame {
 		KnjigaTableModel model = (KnjigaTableModel) table.getModel();
 		model.ucitajKnjige(GUIKontroler.vratiSveKnjige());
 
+	}
+
+	private JPopupMenu getPopupMenu() {
+		if (popupMenu == null) {
+			popupMenu = new JPopupMenu();
+			popupMenu.add(getMntmDodajKnjigu());
+		}
+		return popupMenu;
+	}
+
+	private JMenuItem getMntmDodajKnjigu() {
+		if (mntmDodajKnjigu == null) {
+			mntmDodajKnjigu = new JMenuItem("Dodaj knjigu");
+			mntmDodajKnjigu.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					GUIKontroler.prikaziDodajKnjiguProzor();
+				}
+			});
+		}
+		return mntmDodajKnjigu;
+	}
+
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }
