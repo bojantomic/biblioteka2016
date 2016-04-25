@@ -44,13 +44,13 @@ public class KnjigaTableModel extends AbstractTableModel {
 		case 3:
 			return k.getIzdanje();
 		case 4:
-			if (k.getAutori().get(0) != null) {
+			if (k.getAutori().size() > 0) {
 				return k.getAutori().get(0).getIme() + " " + k.getAutori().get(0).getPrezime();
 			} else {
 				return "";
 			}
 		case 5:
-			if (k.getAutori().get(1) != null) {
+			if (k.getAutori().size() > 1) {
 				return k.getAutori().get(1).getIme() + " " + k.getAutori().get(1).getPrezime();
 			} else {
 				return "";

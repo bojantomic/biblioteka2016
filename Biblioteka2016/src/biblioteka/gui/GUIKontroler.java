@@ -91,7 +91,7 @@ public class GUIKontroler {
 			// Punjenje opstih podataka o knjizi
 			knjiga.setNaslov(naslov);
 			knjiga.setIzdavac(izdavac);
-			knjiga.setIsbn(Integer.parseInt(ISBN));
+			knjiga.setIsbn(Long.parseLong(ISBN));
 			knjiga.setIzdanje(izdanje);
 
 			// Popunjavanje liste autora
